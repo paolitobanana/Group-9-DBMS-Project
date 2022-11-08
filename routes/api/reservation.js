@@ -115,6 +115,7 @@ router.post('/reserve/:user_id', (req,res)=> {
         else if(!results.length){
             console.log("No Reservation for today"); 
         }
+    //SALAMAT SA ACAD BREAK :)
     });*/
 
 module.exports = router;
