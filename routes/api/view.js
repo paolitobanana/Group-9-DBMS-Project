@@ -1,6 +1,13 @@
 const express = require('express');
 
-const date = new Date();
+function addDays(date, days) {
+    var result = new Date(date);
+    result.setDate(result.getDate() + days);
+    return result;
+  }
+
+var date = new Date();
+
 
 const jwt = require('jsonwebtoken')
 
@@ -78,14 +85,16 @@ router.get('/show_avail',(req,res)=>{
     token = req.headers.authorization.split(' ')[1];
     const decodedTOKEN = jwt.verify(token, process.env.TOKEN_SECRET);
     
+
     var searchtitle = req.body.searchtitle;
     var searchauthor = req.body.searchauthor;
     var searchpub = req.body.searchpub;
 
+    var request_date = new Date (req.params.request_date);
+    let reservation_date = request_date.addDays(3);
+
     sqlQuery = `SELECT * FROM book WHERE  book_status = "available"`;
     dbConn.query( sqlQuery, function( error, results, fields ){ 
-        console.log(fields);
-        console.log(results);
         if (error) throw error;
         else if(!results.length){
             res.status(500).json({

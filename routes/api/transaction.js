@@ -2,6 +2,8 @@ var express = require('express');
 
 const jwt = require('jsonwebtoken')
 
+const date = new Date();
+
 var router= express.Router();
 
 var dbConn = require('../../config/db.js');
@@ -23,7 +25,7 @@ router.post('/return/:staff_id', (req,res)=> {
     var staff_id = req.params.staff_id;
     var user_id = req.body.user_id;
     var book_id = req.body.book_id;
-    var Transaction_date = req.body.Transaction_date;
+    let Transaction_date = `${date.getMonth()+1}-${date.getDate()}-${date.getFullYear()}`;
     var Reservation_id = req.body.Reservation_id;
 
 
@@ -38,13 +40,13 @@ router.post('/return/:staff_id', (req,res)=> {
         else{
         sqlQuery = `INSERT INTO transaction(Reservation_id, User_id, book_id,Transaction_name,Transaction_date, Staff_id) VALUES (${Reservation_id},${user_id}, ${book_id},"return","${Transaction_date}", ${staff_id})`;
   
-        dbConn.query(sqlQuery, function(error, results){
-            console.log(`Book ${results.insertId} was reserved by : ${user_id}`);
+        dbConn.query(sqlQuery, function(error, results1){
+            console.log(`Book ${results1.insertId} was reserved by : ${user_id}`);
             res.status(400).json({
                 "Transaction Type" : "Return" ,
-                "Returned by" : user_id,
+                "Returned by user id:" : user_id,
                 "Transaction ID": results.insertId
-        });
+            });
         });
         dbConn.query(`UPDATE book SET book_status = "available" WHERE book_id = ${book_id}`, function(error, results, fields){
             console.log("BOOK STATUS HAS BEEN UPDATED");
@@ -78,7 +80,6 @@ router.post('/release/:staff_id', (req,res)=> {
 
     dbConn.query(`SELECT Reservation_id, book_id, Return_date FROM reservation WHERE Reservation_id = ${Reservation_id} AND book_id = ${book_id}`, function(error, results){
         console.log(results);
-        const return_date = results.Return_date;
         if(error)throw error;
         else if(!results.length){
             console.log("Reservation is not found")
@@ -95,12 +96,11 @@ router.post('/release/:staff_id', (req,res)=> {
                 "Receieved by" : user_id,
                 "Transaction ID": results.insertId
         });
-        dbConn.query(`UPDATE book SET book_status = "not available until:${return_date}" WHERE book_id = ${book_id}`, function(error2, results2){
+        });
+        dbConn.query(`UPDATE book SET book_status = "not available" WHERE book_id = ${book_id}`, function(error2, results2){
             console.log("BOOK STATUS HAS BEEN UPDATED");
-            if(error) return;
+            if(error) return;       
         });
-        });
-
         }
     });  
 });
