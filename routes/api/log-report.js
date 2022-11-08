@@ -69,7 +69,7 @@ router.get('/report/:staff_id', (req,res) => {
                             "User ID" : resultsT[0].User_id,
                             "Transaction Name" : resultsT[0].Transaction_name,
                             "Transaction Date" : resultsT[0].Transaction_date,
-                            "Staff ID": resultsT[0].staff_id
+                            "Staff ID": staff_id
                         }];
                         output = json_report.concat(json_reservation);
                         output = output.concat(json_transaction)

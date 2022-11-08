@@ -61,12 +61,6 @@ router.post('/return/:staff_id', (req,res)=> {
             if(error) return;
         });
         
-        dbConn.query(`UPDATE book SET book_status = "not available" WHERE book_id = ${book_id}`, function(error2, results2){
-            console.log("BOOK STATUS HAS BEEN UPDATED");
-            if(error2) throw error2;       
-            });
-
-
         }
     });  
 

@@ -8,18 +8,19 @@ var dbConn = require('../../config/db.js');
 
 // USER SIGNUP
 // @ROUTE /userauth/signup
-// @DESC Add new useer to the database
+// @DESC Add new user to the database
 // @ACCESS Public
 router.post('/signup', (req,res,next)=> {
     var fname = req.body.fname;
     var lname = req.body.lname;
     var contactNo = req.body.contactNo;
     var email = req.body.email;
-    var password = req.body.pass;
+    var password = req.body.password;
     var user_role = req.body.user_role;
 
     try{
-        sqlQuery = `INSERT INTO user(fname, lname, user_contact, sch_email, sch_pass, user_role) VALUES ("${fname}", "${lname}", "${contactNo}", "${email}", "${password}", "${user_role}")`;
+        sqlQuery = `INSERT INTO user(fname, lname, user_contact, sch_email, sch_pass, user_role) 
+        VALUES ("${fname}", "${lname}", "${contactNo}", "${email}", "${password}", "${user_role}")`;
 
         dbConn.query(sqlQuery, function(error, results){
             console.log(results);
