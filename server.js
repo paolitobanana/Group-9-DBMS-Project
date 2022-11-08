@@ -8,13 +8,15 @@ const viewRoutes = require('./routes/api/view.js');
 const add_removeRoutes = require('./routes/api/add-remove.js');
 const userauthRoutes = require('./routes/api/userauth.js');
 const staffauthRoutes = require('./routes/api/staffauth.js');
+const reservationRoutes = require('./routes/api/reservation.js');
 
 // initialization of middleware
 app.use(express.json({extended: false}));
 app.use('/view', viewRoutes);
 app.use('/staffauth', staffauthRoutes);
 app.use('/userauth', userauthRoutes);
-app.use('/add-remove', add_removeRoutes)
+app.use('/add-remove', add_removeRoutes);
+app.use('/reservation', reservationRoutes);
 
 // testing of API
 app.get('/',(req, res) => res.send('API Running'));

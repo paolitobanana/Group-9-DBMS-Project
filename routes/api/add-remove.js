@@ -31,7 +31,8 @@ router.post('/add/:staff_id', (req,res)=> {
   var publish_date = req.body.publish_date;
   var activity_date = req.body.activity_date;
 
-      sqlQuery = `INSERT INTO book(staff_id, Book_title, Book_author, Book_publisher, Book_desc, book_status, book_cost,Book_version,Publish_date) VALUES (${staff_id}, "${book_title}", "${book_author}", "${book_publisher}", "${book_desc}", "${book_status}", ${book_cost}, "${book_version}", "${publish_date}")`;
+      sqlQuery = `INSERT INTO book(staff_id, Book_title, Book_author, Book_publisher, Book_desc, book_status, book_cost,Book_version,Publish_date) 
+      VALUES (${staff_id}, "${book_title}", "${book_author}", "${book_publisher}", "${book_desc}", "${book_status}", ${book_cost}, "${book_version}", "${publish_date}")`;
 
       dbConn.query(sqlQuery, function(error, results){
           console.log(`Book ${results.insertId} has been added successfully by Admin ID : ${staff_id}`);
