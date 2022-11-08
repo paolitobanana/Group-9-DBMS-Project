@@ -60,7 +60,7 @@ router.get('/login', (req,res,next) => {
             }
             else{
                 userToken = jwt.sign({data:results}, process.env.TOKEN_SECRET, {
-                    expiresIn: '1h'
+                    expiresIn: '3h'
                 });
                 res.status(200).json({
                 msg: 'Log-in Successful!',

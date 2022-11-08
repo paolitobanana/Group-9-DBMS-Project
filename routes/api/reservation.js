@@ -1,5 +1,7 @@
 var express = require('express');
 
+const date = new Date();
+
 const jwt = require('jsonwebtoken')
 
 var router= express.Router();
@@ -15,6 +17,7 @@ var dbConn = require('../../config/db.js');
 // @DESC Addds new books to the book library, and the activity will be tracked in the log_library table
 router.post('/reserve/:user_id', (req,res)=> {
     var token = req.headers.authorization;
+
   
     if (!token){
       res.status(400).json({success: false, msg: 'Error, Token was not found'});
@@ -28,6 +31,7 @@ router.post('/reserve/:user_id', (req,res)=> {
     var Return_date = req.body.Return_date;
     var book_id = req.body.book_id;
 
+
     dbConn.query(`SELECT book_id, book_status FROM book WHERE book_id = ${book_id} AND book_status = "available"`, function(error, results, fields){
         console.log(results);
         if(error)throw error;
@@ -37,12 +41,12 @@ router.post('/reserve/:user_id', (req,res)=> {
             return;
         }
         else{
-        sqlQuery = `INSERT INTO reservation(user_id,Request_date, Return_date, book_id) VALUES (${user_id},"${Request_date}", "${Return_date}", ${book_id})`;
+        sqlQuery = `INSERT INTO reservation(user_id,Request_date, Return_date, book_id,reservation_status) VALUES (${user_id},"${Request_date}", "${Return_date}", ${book_id}),"on-going"`;
   
         dbConn.query(sqlQuery, function(error, results){
             console.log(`Book ${results.insertId} was reserved by : ${user_id}`);
             res.status(400).json({
-                "Reservation status" : "Nominal" ,
+                "Reservation status" : "Claim the book you reserved before 3 days after this request." ,
                 "Added by" : user_id,
                 "Reservation ID": results.insertId
         });
@@ -54,5 +58,29 @@ router.post('/reserve/:user_id', (req,res)=> {
         }
     });  
 });
+
+/*router.get('/reserved/:staff_id/:request_status', (req,res) =>{
+    var token = req.headers.authorization;
+  
+    if (!token){
+      res.status(400).json({success: false, msg: 'Error, Token was not found'});
+      return;
+    }
+    token = req.headers.authorization.split(' ')[1];
+    const decodedToken = jwt.verify(token, process.env.TOKEN_SECRET);
+    
+    //var request_date = req.params.request_date;
+
+    let current_date = `${date.getMonth()+1}-${date.getDate()}-${date.getFullYear()}`;
+    console.log(current_date);
+    
+    
+    dbConn.query(`SELECT * FROM  reservation WHERE Request_date = "${request_date}"`, function (error, results){
+        if (error) throw error;
+        else if(!results.length){
+            console.log("No Reservation for today"); 
+        }
+    });
+});*/
 
 module.exports = router;

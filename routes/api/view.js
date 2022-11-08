@@ -1,5 +1,7 @@
 const express = require('express');
 
+const date = new Date();
+
 const jwt = require('jsonwebtoken')
 
 const app = express.Router();
@@ -12,6 +14,7 @@ const router = require('./staffauth');
 //SELECT ALL
 router.get('/showall', (req, res) => {
     var token = req.headers.authorization;
+
 
     if(!token){
         res.status(400).json({success: false, msg: 'Error, Token was not found'});
@@ -81,6 +84,8 @@ router.get('/show_avail',(req,res)=>{
 
     sqlQuery = `SELECT * FROM book WHERE  book_status = "available"`;
     dbConn.query( sqlQuery, function( error, results, fields ){ 
+        console.log(fields);
+        console.log(results);
         if (error) throw error;
         else if(!results.length){
             res.status(500).json({
