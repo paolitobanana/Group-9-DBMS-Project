@@ -10,6 +10,7 @@ const userauthRoutes = require('./routes/api/userauth.js');
 const staffauthRoutes = require('./routes/api/staffauth.js');
 const reservationRoutes = require('./routes/api/reservation.js');
 const transactionRoutes = require('./routes/api/transaction.js');
+const log_reportRoutes = require('./routes')
 
 // initialization of middleware
 app.use(express.json({extended: false}));

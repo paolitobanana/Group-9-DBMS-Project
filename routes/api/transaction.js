@@ -53,6 +53,13 @@ router.post('/return/:staff_id', (req,res)=> {
             if(error) return;
         });
         }
+        var report_date = new Date();
+
+        sqlQuery = `INSERT INTO activity_log(report_date, reservation_id, transaction_id) VALUES(${report_date}, ${reservation_id}, "${transaction_id}")`;
+
+        dbConn.query(sqlQuery, function(err, resu){
+        console.log(`Library_log ${resu.insertId}: ${user_id} has added reservation having reservation ID: ${reservation_id} `);
+        });
     });  
 });
 
