@@ -6,10 +6,10 @@ var express = require('express');
     var date = new Date(this.valueOf());
     date.setDate(date.getDate() + days);
     return date;
-}
+}*/
 
 var date = new Date()
-*/
+
 const jwt = require('jsonwebtoken')
 
 var router= express.Router();
@@ -69,11 +69,9 @@ router.post('/reserve/:user_id', (req,res)=> {
             if(error) return;
         });
         }
-    
-
     });  
 });
-
+ 
 // Prototype no.0001 not working !!!! PLS HELP MEE IM DYING!!!
 // WHY LIVE 
 /*router.get('/reserved/:staff_id/:request_status', (req,res) =>{
@@ -117,7 +115,6 @@ router.post('/reserve/:user_id', (req,res)=> {
         else if(!results.length){
             console.log("No Reservation for today"); 
         }
-    });
-});*/
+    });*/
 
 module.exports = router;
